@@ -28,15 +28,15 @@ export class Dashboard extends React.Component {
         this.props.dispatch(fetchProtectedData());
         this.logoutTimer = setTimeout(() => {
             this.logOut()
-        }, 10000)
-        console.log(this.logoutTimer)
+        }, 15000)
     }
+        
 
     resetTimer() {
-        clearTimeout(this.logoutTimer);
+        clearTimeout(this.logoutTimer)
         this.logoutTimer = setTimeout(() => {
             this.logOut()
-        }, 10000)
+        }, 15000)
         
     }
 
@@ -51,7 +51,7 @@ export class Dashboard extends React.Component {
     render() {
         return (
             <div className="dashboard"  onClick={() => 
-                this.windowConfirm(window.confirm('Press OK to Stay Logged In'))}>
+                this.resetTimer()}>
                 <div className="dashboard-username">
                     Username: {this.props.username}
                 </div>
