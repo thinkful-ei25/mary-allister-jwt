@@ -26,6 +26,9 @@ export class App extends React.Component {
     }
    
     componentDidMount() {
+        this.confirmTimer = setTimeout(()=>{
+            this.windowConfirm(window.confirm('Press OK to Stay Logged In'))
+        }, 5000)
         this.logoutTimer = setTimeout(() => {
             this.logOut()
         }, 10000)
@@ -34,9 +37,7 @@ export class App extends React.Component {
     }
 
     resetTimer() {
-        this.confirmTimer = setTimeout(()=>{
-            this.windowConfirm(window.confirm('Press OK to Stay Logged In'))
-        }, 5000)
+        
         clearTimeout(this.logoutTimer);
         this.logoutTimer = setTimeout(() => {
             this.logOut()
