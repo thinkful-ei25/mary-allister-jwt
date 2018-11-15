@@ -6,9 +6,53 @@ import HeaderBar from './header-bar';
 import LandingPage from './landing-page';
 import Dashboard from './dashboard';
 import RegistrationPage from './registration-page';
-import { refreshAuthToken} from '../actions/auth';
+import { refreshAuthToken, clearAuth} from '../actions/auth';
 
 export class App extends React.Component {
+
+
+    stopLogoutTimer() {
+        if (!this.logoutTimer) {
+            return;
+        }
+
+        clearTimeout(this.logoutTimer);
+    }
+    
+    
+    logOut() {
+        this.props.dispatch(clearAuth());
+        this.stopLogoutTimer();
+    }
+   
+    componentDidMount() {
+        this.logoutTimer = setTimeout(() => {
+            this.logOut()
+        }, 10000)
+        console.log(this.logoutTimer)
+        //
+    }
+
+    resetTimer() {
+        this.confirmTimer = setTimeout(()=>{
+            this.windowConfirm(window.confirm('Press OK to Stay Logged In'))
+        }, 5000)
+        clearTimeout(this.logoutTimer);
+        this.logoutTimer = setTimeout(() => {
+            this.logOut()
+        }, 10000)
+        
+    }
+
+    windowConfirm(ok) {
+        if (ok) {
+            this.resetTimer();
+        } else {
+            this.logOut();
+        }
+}
+
+    //////////////////////////////////////////////
 
     componentDidUpdate(prevProps) {
         if (!prevProps.loggedIn && this.props.loggedIn) {
@@ -22,6 +66,7 @@ export class App extends React.Component {
 
     componentWillUnmount() {
         this.stopPeriodicRefresh();
+        
     }
 
     startPeriodicRefresh() {
@@ -41,7 +86,8 @@ export class App extends React.Component {
 
     render() {
         return (
-            <div className="app">
+            <div className="app"  onClick={() => this.resetTimer()
+                }>
                 <HeaderBar />
                 <Route exact path="/" component={LandingPage} />
                 <Route exact path="/dashboard" component={Dashboard} />

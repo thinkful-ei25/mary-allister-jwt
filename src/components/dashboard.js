@@ -1,57 +1,53 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import requiresLogin from './requires-login';
-import {fetchProtectedData} from '../actions/protected-data';
-import {clearAuth } from '../actions/auth';
+import { fetchProtectedData } from '../actions/protected-data';
+// import {clearAuth } from '../actions/auth';
 
 
 
 export class Dashboard extends React.Component {
-    
-    
-    stopLogoutTimer() {
-        if (!this.logoutTimer) {
-            return;
-        }
 
-        clearTimeout(this.logoutTimer);
-    }
-    
-    
-    logOut() {
-        this.props.dispatch(clearAuth());
-        this.stopLogoutTimer();
-        // clearAuthToken();
-    }
-   
+
+    // stopLogoutTimer() {
+    //     if (!this.logoutTimer) {
+    //         return;
+    //     }
+
+    //     clearTimeout(this.logoutTimer);
+    // }
+
+
+    // logOut() {
+    //     this.props.dispatch(clearAuth());
+    //     this.stopLogoutTimer();
+    //     // clearAuthToken();
+
+
     componentDidMount() {
         this.props.dispatch(fetchProtectedData());
-        this.logoutTimer = setTimeout(() => {
-            this.logOut()
-        }, 10000)
-        console.log(this.logoutTimer)
+
     }
 
-    resetTimer() {
-        clearTimeout(this.logoutTimer);
-        this.logoutTimer = setTimeout(() => {
-            this.logOut()
-        }, 10000)
-        
-    }
+    // resetTimer() {
+    //     clearTimeout(this.logoutTimer);
+    //     this.logoutTimer = setTimeout(() => {
+    //         this.logOut()
+    //     }, 10000)
 
-    windowConfirm(ok) {
-        if (ok) {
-            this.resetTimer();
-        } else {
-            this.logOut();
-        }
-}
+    // }
+
+    //     windowConfirm(ok) {
+    //         if (ok) {
+    //             this.resetTimer();
+    //         } else {
+    //             this.logOut();
+    //         }
+    // }
 
     render() {
         return (
-            <div className="dashboard"  onClick={() => 
-                this.windowConfirm(window.confirm('Press OK to Stay Logged In'))}>
+            <div className="dashboard">
                 <div className="dashboard-username">
                     Username: {this.props.username}
                 </div>
@@ -65,7 +61,7 @@ export class Dashboard extends React.Component {
 }
 
 const mapStateToProps = state => {
-    const {currentUser} = state.auth;
+    const { currentUser } = state.auth;
     return {
         username: state.auth.currentUser.username,
         name: `${currentUser.firstName} ${currentUser.lastName}`,
