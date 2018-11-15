@@ -6,7 +6,7 @@ import HeaderBar from './header-bar';
 import LandingPage from './landing-page';
 import Dashboard from './dashboard';
 import RegistrationPage from './registration-page';
-import { refreshAuthToken, clearAuth} from '../actions/auth';
+import { refreshAuthToken, clearAuth } from '../actions/auth';
 
 export class App extends React.Component {
 
@@ -18,40 +18,44 @@ export class App extends React.Component {
 
         clearTimeout(this.logoutTimer);
     }
-    
-    
+
+
     logOut() {
         this.props.dispatch(clearAuth());
         this.stopLogoutTimer();
     }
-   
+
     componentDidMount() {
         this.confirmTimer = setTimeout(()=>{
             this.windowConfirm(window.confirm('Press OK to Stay Logged In'))
-        }, 5000)
-        this.logoutTimer = setTimeout(() => {
-            this.logOut()
         }, 10000)
+        // this.logoutTimer = setTimeout(() => {
+        //     this.logOut()
+        // }, 20000)
         console.log(this.logoutTimer)
         //
     }
 
     resetTimer() {
-        
+        console.log('resetTimer was called')
+        // this.confirmTimer = setTimeout(() => {
+        //     this.windowConfirm(window.confirm('Press OK to Stay Logged In'))
+        // }, 10000)
         clearTimeout(this.logoutTimer);
         this.logoutTimer = setTimeout(() => {
             this.logOut()
-        }, 10000)
-        
+        }, 20000)
+
     }
 
     windowConfirm(ok) {
         if (ok) {
+            console.log('window confirm was clicked')
             this.resetTimer();
         } else {
             this.logOut();
         }
-}
+    }
 
     //////////////////////////////////////////////
 
@@ -67,7 +71,7 @@ export class App extends React.Component {
 
     componentWillUnmount() {
         this.stopPeriodicRefresh();
-        
+
     }
 
     startPeriodicRefresh() {
@@ -87,8 +91,13 @@ export class App extends React.Component {
 
     render() {
         return (
-            <div className="app"  onClick={() => this.resetTimer()
-                }>
+            <div className="app"
+            //  onClick={() => {
+            //     console.log('event listener was triggered')
+            //     this.resetTimer()
+            // }
+            // }
+            >
                 <HeaderBar />
                 <Route exact path="/" component={LandingPage} />
                 <Route exact path="/dashboard" component={Dashboard} />
